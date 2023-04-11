@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@drawable/bgimg2"
+android:gravity="center_horizontal"
+android:orientation="vertical"
+tools:context=".SearchForMeals">
+
+<Space
+    android:layout_width="match_parent"
+    android:layout_height="10dp" />
+
+    <LinearLayout
+        android:layout_width="359dp"
+        android:layout_height="58dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editTextTextSearchFromDB"
+            android:layout_width="258dp"
+            android:layout_height="44dp"
+            android:background="@drawable/edit_round"
+            android:ems="10"
+            android:hint="Search..."
+            android:inputType="textPersonName"
+            android:padding="10dp" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/retrieveMealsFromDBBtn"
+            android:layout_width="90dp"
+            android:layout_height="46dp"
+            android:background="@drawable/round_btn"
+            android:text="Search"
+            android:textAllCaps="false"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+<Space
+    android:layout_width="match_parent"
+    android:layout_height="10dp" />
+
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/recycleViewMyMeals"
+    android:layout_width="358dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:clipToPadding="false" />
+
+
+</LinearLayout>
