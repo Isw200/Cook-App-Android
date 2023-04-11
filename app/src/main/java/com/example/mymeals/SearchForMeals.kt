@@ -47,7 +47,8 @@ class SearchForMeals : AppCompatActivity() {
         }
 
         if (savedInstanceState != null) {
-            mealArrayList = savedInstanceState.getParcelableArrayList<MealItem>("mealArrayList") as ArrayList<MealItem>
+            mealArrayList =
+                savedInstanceState.getParcelableArrayList<MealItem>("mealArrayList") as ArrayList<MealItem>
             showMeals(mealArrayList)
         }
 
@@ -60,6 +61,9 @@ class SearchForMeals : AppCompatActivity() {
         }
     }
 
+    /**
+     * Search for meals in the database
+     */
     private fun search(keyword: String) {
         mealArrayList.clear()
         runBlocking {
@@ -73,6 +77,9 @@ class SearchForMeals : AppCompatActivity() {
         showMeals(mealArrayList)
     }
 
+    /**
+     * Show meals in the recycler view
+     */
     private fun showMeals(arrayList: ArrayList<MealItem>) {
         val itemSpacingDeco = SpacingDeco(20)
         recyclerView.addItemDecoration(itemSpacingDeco)

@@ -1,3 +1,9 @@
+/**
+ * This class is used to convert the ArrayList<String> to a String and vice versa
+ * This is needed because Room does not support ArrayList<String> as a type
+ * This class is used in the MealItem.kt file
+ */
+
 package com.example.mymeals.support
 
 import androidx.room.TypeConverter

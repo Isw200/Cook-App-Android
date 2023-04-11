@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
+        // Retrieve data after system configuration change
         if (savedInstanceState != null) {
             mealNameArrayList = savedInstanceState.getStringArrayList("mealNameArrayList")!!
             searchKeyword = savedInstanceState.getString("searchKeyword")!!
@@ -56,16 +57,17 @@ class MainActivity : AppCompatActivity() {
 
             findViewById<EditText>(R.id.editTextTextSearchMain).text.append(searchKeyword)
             if (isSearching) {
-                search(searchKeyword)
+                if (searchKeyword != "") {
+                    search(searchKeyword)
+                }
             }
         }
-
 
         // create database
         Global.db = Room.databaseBuilder(this, MealDatabase::class.java, "meal-db").build()
         mealDao = Global.db!!.mealItemDao()
 
-        // get initial meals from json and add to database
+        // get initial meals from JSON and add to database
         val inputStream = resources.openRawResource(R.raw.initial_meals)
         val jsonString = inputStream.bufferedReader().use { it.readText() }
         val jsonArray = JSONArray(jsonString)
@@ -80,7 +82,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // get all meals
+        // get all meals and add to arraylist
         runBlocking {
             launch {
                 val meals = mealDao!!.getAll()
@@ -90,6 +92,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // All buttons and their actions in main activity
         findViewById<Button>(R.id.add_meals_to_db_btn).setOnClickListener {
             val intent = Intent(this, FavMealsDB::class.java)
             startActivity(intent)
@@ -107,7 +110,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // search
+        // search for Meal names
         findViewById<ImageButton>(R.id.searchMain).setOnClickListener {
             Global.imgButtonClickAnimation(it as ImageButton)
             mealNameArrayList.clear()
@@ -118,12 +121,16 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please enter a keyword", Toast.LENGTH_SHORT).show()
                 showNames(mealNameArrayList)
                 return@setOnClickListener
-            } else{
+            } else {
                 search(keyword)
             }
         }
     }
 
+    /**
+     * Search for meals from API
+     * @param keyword: String keyword to search for meal names with keyword in it (case insensitive)
+     */
     private fun search(keyword: String) {
         try {
             // add by meal name
@@ -148,10 +155,13 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Toast.makeText(this, "No meals found with $keyword", Toast.LENGTH_SHORT).show()
         }
-
         showNames(mealNameArrayList)
     }
 
+    /**
+     * Parse JSON data from API and add each mealName to mealNameArrayList
+     * @param stringBuilder: StringBuilder containing JSON data
+     */
     private fun parseJsonData(stringBuilder: StringBuilder) {
         val json = JSONObject(stringBuilder.toString())
 
@@ -164,6 +174,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Show meal names in recyclerview
+     * @param mealNameArrayList: ArrayList<String> containing meal names
+     */
     private fun showNames(mealNameArrayList: ArrayList<String>) {
         val itemSpacingDeco = SpacingDeco(0)
         recyclerView = findViewById(R.id.mainAcSearchResults)
@@ -175,6 +189,9 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
+    /**
+     * on stop, save search keyword
+     */
     override fun onStop() {
         super.onStop()
         val keyword = findViewById<EditText>(R.id.editTextTextSearchMain).text.toString()

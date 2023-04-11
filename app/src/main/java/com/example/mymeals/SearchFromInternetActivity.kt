@@ -3,7 +3,6 @@ package com.example.mymeals
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -90,7 +89,10 @@ class SearchFromInternetActivity : AppCompatActivity() {
     }
 
 
-    // search by meal name
+    /**
+     * This function will get the keyword that contains the meal name.
+     * Search result will be received from the API.
+     */
     private fun searchByName(keyWord: String){
         runBlocking {
             launch {
@@ -121,6 +123,13 @@ class SearchFromInternetActivity : AppCompatActivity() {
         showMeals(mealArrayList)
     }
 
+    /**
+     * This function will get the keyword that contains the ingredients
+     * and search for the meal id that contains the ingredients.
+     * Search result will be received from the API.
+     * It contains ID of each meal that contains the ingredients.
+     * @param keyWord: String keyword that contains the ingredients
+     */
     private fun search(keyWord: String){
         try {
             val stringBuilder = StringBuilder()
@@ -153,6 +162,10 @@ class SearchFromInternetActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * This function will get all the meal details from the API
+     * which contains the meal ids that are stored in the mealIdArrayList.
+     */
     private fun retrieveMeals(mealIds: ArrayList<String>){
         runBlocking {
             launch {
@@ -183,6 +196,11 @@ class SearchFromInternetActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * This function will parse the json data and store the meal details
+     * into the mealArrayList.
+     * @param stringBuilder: StringBuilder that contains the json data
+     */
     private fun parseJsonData(stringBuilder: StringBuilder) {
         val json = JSONObject(stringBuilder.toString())
 
@@ -195,6 +213,11 @@ class SearchFromInternetActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * This function will parse the json data and store the meal id
+     * into the mealIdArrayList.
+     * @param stringBuilder: StringBuilder that contains the json data
+     */
     private fun parseJsonDataMealID(stringBuilder: StringBuilder) {
         val json = JSONObject(stringBuilder.toString())
 
@@ -207,6 +230,10 @@ class SearchFromInternetActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * This function will display the meal details in the recycler view.
+     * @param mealArrayList: ArrayList<MealItem> that contains the meal details
+     */
     private fun showMeals(mealArrayList: ArrayList<MealItem>){
         val itemSpacingDeco = SpacingDeco(20)
         newRecyclerView = findViewById(R.id.recycleView)

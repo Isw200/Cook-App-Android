@@ -1,3 +1,6 @@
+/**
+ * This class is used to add spacing between items in a RecyclerView
+ */
 package com.example.mymeals.support
 
 import android.graphics.Rect

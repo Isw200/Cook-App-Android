@@ -1,3 +1,8 @@
+/**
+ * This class is used to store global variables
+ * that are used throughout the app
+ */
+
 package com.example.mymeals
 
 import android.widget.Button
@@ -13,6 +18,11 @@ class Global {
         var db: MealDatabase? = null
         var mealDao : MealItemDao? = null
 
+        /**
+         * This function is used to convert a json string to a MealItem object
+         * specifically for when the json string is from the local database
+         * @param json the json string to be converted
+         */
         fun convertJsonToMeal(json: String): MealItem {
             val gson = Gson()
             val jsonObject = gson.fromJson(json, JsonObject::class.java)
@@ -84,12 +94,20 @@ class Global {
             )
         }
 
+        /**
+         * This function is used to convert a json string to a meal id (int)
+         */
         fun convertJsonToMealId(json: String): Int {
             val gson = Gson()
             val jsonObject = gson.fromJson(json, JsonObject::class.java)
             return jsonObject["idMeal"].asInt
         }
 
+        /**
+         * This function is used to convert a json string to a MealItem object
+         * specifically for when the json string is from the API
+         * @param json the json string to be converted
+         */
         fun convertJsonToMealFromAPI(json: String): MealItem {
             val gson = Gson()
             val jsonObject = gson.fromJson(json, JsonObject::class.java)
@@ -166,6 +184,9 @@ class Global {
             )
         }
 
+        /**
+         * This function perform a button click animation
+         */
         fun buttonClickAnimation(button: Button) {
             button.animate().apply {
                 scaleX(0.9f)
@@ -181,6 +202,9 @@ class Global {
             }.start()
         }
 
+        /**
+         * This function perform a button click animation for image buttons
+         */
         fun imgButtonClickAnimation(button: ImageButton) {
             button.animate().apply {
                 scaleX(0.9f)

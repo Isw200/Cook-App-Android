@@ -1,3 +1,8 @@
+/**
+ * This is the DAO (Data Access Object) for the MealItem class.
+ * It contains the queries that can be performed on the database.
+ * The queries are written in SQL.
+ */
 package com.example.mymeals.database
 
 import androidx.room.Dao
