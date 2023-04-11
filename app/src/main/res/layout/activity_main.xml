@@ -45,16 +45,16 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mainAcSearchResults"
         android:layout_width="342dp"
-        android:layout_height="211dp" />
+        android:layout_height="251dp" />
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="30dp" />
+        android:layout_height="35dp" />
 
     <LinearLayout
         android:id="@+id/mainScreenLinear"
         android:layout_width="353dp"
-        android:layout_height="434dp"
+        android:layout_height="match_parent"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
