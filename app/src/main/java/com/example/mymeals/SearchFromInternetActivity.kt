@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymeals.adapters.ItemAdapter
 import com.example.mymeals.database.MealItem
+import com.example.mymeals.support.LoadingDialog
 import com.example.mymeals.support.SpacingDeco
 import kotlinx.coroutines.*
 import org.json.JSONObject
@@ -107,23 +108,40 @@ class SearchFromInternetActivity : AppCompatActivity() {
      * @param keyWord: String keyword that contains the ingredients
      */
     private fun searchByIng(keyWord: String) {
+        // Show loading dialog
+        val loadingDialog = LoadingDialog(this)
+        loadingDialog.startLoadingDialog()
+        // Get the result from the API
         try {
+            val stb = StringBuilder()
             val urlString = "https://www.themealdb.com/api/json/v1/1/filter.php?i=${keyWord}"
+            val url = URL(urlString)
+            val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
 
             val scope = CoroutineScope(Dispatchers.Default)
             scope.launch {
-                val result = withContext(Dispatchers.IO) {
-                    URL(urlString).readText()
+                withContext(Dispatchers.IO) {
+                    val bf = BufferedReader(InputStreamReader(connection.inputStream))
+                    var line: String? = bf.readLine()
+                    while (line != null) {
+                        stb.append(line + "\n")
+                        line = bf.readLine()
+                    }
+                    bf.close()
                 }
-                parseJsonDataMealID(result)
+                parseJsonDataMealID(stb)
 
                 // retrieve meals by meal id
                 retrieveMeals(mealIdArrayList)
 
                 withContext(Dispatchers.Main) {
                     showMeals(mealArrayList)
+                    loadingDialog.dismissDialog()
                 }
             }
+
+            connection.disconnect()
+
         } catch (e: Exception) {
             Toast.makeText(this, "No meals found", Toast.LENGTH_SHORT).show()
             Log.d("Error_SearchFromInternetActivity", e.toString())
@@ -138,18 +156,30 @@ class SearchFromInternetActivity : AppCompatActivity() {
     private fun retrieveMeals(mealIds: ArrayList<String>) {
         runBlocking {
             launch {
-                for (id in mealIds) {
-                    try {
-                        val urlString =
-                            "https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}"
+                withContext(Dispatchers.IO) {
+                    for (id in mealIds) {
+                        val stb = StringBuilder()
+                        try {
+                            val urlString =
+                                "https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}"
+                            val url = URL(urlString)
+                            val connection: HttpURLConnection =
+                                url.openConnection() as HttpURLConnection
 
-                        val result = withContext(Dispatchers.IO) {
-                            URL(urlString).readText()
+                            val bf = BufferedReader(InputStreamReader(connection.inputStream))
+                            var line: String? = bf.readLine()
+                            while (line != null) {
+                                stb.append(line + "\n")
+                                line = bf.readLine()
+                            }
+                            bf.close()
+
+                            parseJsonDataMeal(stb)
+                            connection.disconnect()
+
+                        } catch (e: Exception) {
+                            Log.d("Error_SearchFromInternetActivity", e.toString())
                         }
-                        parseJsonDataMeal(result)
-
-                    } catch (e: Exception) {
-                        Log.d("Error_SearchFromInternetActivity", e.toString())
                     }
                 }
             }
@@ -159,10 +189,10 @@ class SearchFromInternetActivity : AppCompatActivity() {
     /**
      * This function will parse the json data and store the meal details
      * into the mealArrayList.
-     * @param jsonString: String that contains the json data
+     * @param jsonString: StringBuilder that contains the json data
      */
-    private fun parseJsonDataMeal(jsonString: String) {
-        val json = JSONObject(jsonString)
+    private fun parseJsonDataMeal(jsonString: java.lang.StringBuilder) {
+        val json = JSONObject(jsonString.toString())
 
         val jsonArray = json.getJSONArray("meals")
 
@@ -176,10 +206,10 @@ class SearchFromInternetActivity : AppCompatActivity() {
     /**
      * This function will parse the json data and store the meal id
      * into the mealIdArrayList.
-     * @param jsonString: String that contains the json data
+     * @param jsonString: StringBuilder that contains the json data
      */
-    private fun parseJsonDataMealID(jsonString: String) {
-        val jsonObj = JSONObject(jsonString)
+    private fun parseJsonDataMealID(jsonString: java.lang.StringBuilder) {
+        val jsonObj = JSONObject(jsonString.toString())
         val mealsArray = jsonObj.getJSONArray("meals")
 
         for (i in 0 until mealsArray.length()) {

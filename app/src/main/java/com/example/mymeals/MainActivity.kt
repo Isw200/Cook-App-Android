@@ -148,10 +148,14 @@ class MainActivity : AppCompatActivity() {
                             stringBuilder.append(line + "\n")
                             line = bf.readLine()
                         }
+                        bf.close()
                         parseJsonData(stringBuilder)
                     }
                 }
             }
+
+            urlConnection.disconnect()
+
         } catch (e: Exception) {
             Toast.makeText(this, "No meals found with $keyword", Toast.LENGTH_SHORT).show()
         }
