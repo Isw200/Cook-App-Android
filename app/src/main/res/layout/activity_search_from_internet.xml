@@ -14,7 +14,7 @@
         android:layout_height="10dp" />
 
     <EditText
-        android:id="@+id/editTextTextSearchMain"
+        android:id="@+id/editTextSearchFromInternet"
         android:layout_width="358dp"
         android:layout_height="44dp"
         android:background="@drawable/edit_round"
@@ -61,7 +61,7 @@
         android:layout_height="10dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleView"
+        android:id="@+id/searchFromInternetRecycleView"
         android:layout_width="358dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

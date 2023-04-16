@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@drawable/bgimg2"
+android:gravity="center_horizontal"
+android:orientation="vertical"
+tools:context=".SearchByNameActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="98dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <EditText
+            android:id="@+id/editTextSearchByName"
+            android:layout_width="284dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_round2"
+            android:elevation="20dp"
+            android:ems="10"
+            android:hint="Search..."
+            android:inputType="textPersonName"
+            android:padding="10dp" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/searchByNameBtn"
+            android:layout_width="32dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:background="@drawable/round_img_btn"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/search" />
+
+        <Space
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+<Space
+    android:layout_width="match_parent"
+    android:layout_height="10dp" />
+
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/searchByNameRecycleView"
+    android:layout_width="358dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:clipToPadding="false" />
+
+
+</LinearLayout>

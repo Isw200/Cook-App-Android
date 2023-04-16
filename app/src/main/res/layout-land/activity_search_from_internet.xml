@@ -14,7 +14,7 @@
         android:layout_height="10dp" />
 
     <EditText
-        android:id="@+id/editTextTextSearchMain"
+        android:id="@+id/editTextTextSearchByName"
         android:layout_width="358dp"
         android:layout_height="44dp"
         android:background="@drawable/edit_round"
@@ -61,7 +61,7 @@
         android:layout_height="10dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleView"
+        android:id="@+id/searchByNameRecycleView"
         android:layout_width="624dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"

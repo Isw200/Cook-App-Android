@@ -51,11 +51,11 @@ class SearchFromInternetActivity : AppCompatActivity() {
                 savedInstanceState.getParcelableArrayList<MealItem>("mealArrayList") as ArrayList<MealItem>
             showMeals(mealArrayList)
 
-            searchEditText = findViewById(R.id.editTextTextSearchMain)
+            searchEditText = findViewById(R.id.editTextSearchFromInternet)
             searchEditText.setText(keyword)
         }
 
-        searchEditText = findViewById(R.id.editTextTextSearchMain)
+        searchEditText = findViewById(R.id.editTextSearchFromInternet)
         retrieveButton = findViewById(R.id.retrieveMealsBtn)
         saveMealsToDBBtn = findViewById(R.id.saveMealsToDB)
 
@@ -225,7 +225,7 @@ class SearchFromInternetActivity : AppCompatActivity() {
      */
     private fun showMeals(mealArrayList: ArrayList<MealItem>) {
         val itemSpacingDeco = SpacingDeco(20)
-        newRecyclerView = findViewById(R.id.recycleView)
+        newRecyclerView = findViewById(R.id.searchFromInternetRecycleView)
         newRecyclerView.addItemDecoration(itemSpacingDeco)
         newRecyclerView.layoutManager = LinearLayoutManager(this)
         newRecyclerView.setHasFixedSize(true)

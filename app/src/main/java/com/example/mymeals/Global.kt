@@ -10,8 +10,7 @@ import android.widget.ImageButton
 import com.example.mymeals.database.MealDatabase
 import com.example.mymeals.database.MealItem
 import com.example.mymeals.database.MealItemDao
-import com.google.gson.Gson
-import com.google.gson.JsonObject
+import org.json.JSONObject
 
 class Global {
     companion object {
@@ -23,9 +22,9 @@ class Global {
          * specifically for when the json string is from the local database
          * @param json the json string to be converted
          */
+
         fun convertJsonToMeal(json: String): MealItem {
-            val gson = Gson()
-            val jsonObject = gson.fromJson(json, JsonObject::class.java)
+            val jsonObject = JSONObject(json)
 
             val ingredients = ArrayList<String>()
             val measures = ArrayList<String>()
@@ -34,46 +33,37 @@ class Global {
                 val ingredientKey = "Ingredient$i"
                 val measureKey = "Measure$i"
 
-                var ingredient = jsonObject[ingredientKey]?.asString
-                val measure = jsonObject[measureKey]?.asString
+                val ingredient = jsonObject.optString(ingredientKey, null.toString())
+                val measure = jsonObject.optString(measureKey, null.toString())
 
-                if (ingredient != null && measure != null && ingredient.isNotBlank() && measure.isNotBlank()) {
+                if (ingredient.isNotBlank() && measure.isNotBlank()) {
                     val ingredientNoComma = ingredient.replace(",", "-")
                     ingredients.add(ingredientNoComma)
                     measures.add(measure)
                 }
             }
 
-            val idMeal = jsonObject["idMeal"].asInt
-            val mealName = jsonObject["Meal"].asString
-            val drinkAlternateElement = jsonObject.get("DrinkAlternate")
-            val drinkAlternate =
-                if (drinkAlternateElement.isJsonNull) "" else drinkAlternateElement.asString
-
-            val category = jsonObject["Category"].asString
-            val area = jsonObject["Area"].asString
-            val instructions = jsonObject["Instructions"].asString
-            val mealThumbElement = jsonObject.get("MealThumb")
-            val mealThumb =
-                if (mealThumbElement.isJsonNull || mealThumbElement == null) "null" else mealThumbElement.asString
-            val tagsElement = jsonObject.get("Tags")
-            val tags =
-                if (tagsElement.isJsonNull || tagsElement == null) "null" else tagsElement.asString
-            val youtubeElement = jsonObject.get("Youtube")
-            val youtube =
-                if (youtubeElement.isJsonNull || youtubeElement == null) "null" else youtubeElement.asString
-            val sourceElement = jsonObject.get("Source")
-            val source = if (sourceElement == null) "null" else sourceElement.asString
-            val imageSourceElement = jsonObject.get("ImageSource")
-            val imageSource =
-                if (imageSourceElement == null || imageSourceElement.isJsonNull) "null" else imageSourceElement.asString
-            val creativeCommonsConfirmedElement = jsonObject.get("CreativeCommonsConfirmed")
-            val creativeCommonsConfirmed =
-                if (creativeCommonsConfirmedElement == null || creativeCommonsConfirmedElement.isJsonNull) "null" else creativeCommonsConfirmedElement.asString
-            val dateModifiedElement = jsonObject.get("dateModified")
-            val dateModified =
-                if (dateModifiedElement == null || dateModifiedElement.isJsonNull) "null" else dateModifiedElement.asString
-
+            val idMeal = jsonObject.getInt("idMeal")
+            val mealName = jsonObject.getString("Meal")
+            val drinkAlternateElement = jsonObject.opt("DrinkAlternate")
+            val drinkAlternate = if (drinkAlternateElement == null || drinkAlternateElement == JSONObject.NULL) "" else drinkAlternateElement.toString()
+            val category = jsonObject.getString("Category")
+            val area = jsonObject.getString("Area")
+            val instructions = jsonObject.getString("Instructions")
+            val mealThumbElement = jsonObject.opt("MealThumb")
+            val mealThumb = if (mealThumbElement == null || mealThumbElement == JSONObject.NULL) "null" else mealThumbElement.toString()
+            val tagsElement = jsonObject.opt("Tags")
+            val tags = if (tagsElement == null || tagsElement == JSONObject.NULL) "null" else tagsElement.toString()
+            val youtubeElement = jsonObject.opt("Youtube")
+            val youtube = if (youtubeElement == null || youtubeElement == JSONObject.NULL) "null" else youtubeElement.toString()
+            val sourceElement = jsonObject.opt("Source")
+            val source = if (sourceElement == null || sourceElement == JSONObject.NULL) "null" else sourceElement.toString()
+            val imageSourceElement = jsonObject.opt("ImageSource")
+            val imageSource = if (imageSourceElement == null || imageSourceElement == JSONObject.NULL) "null" else imageSourceElement.toString()
+            val creativeCommonsConfirmedElement = jsonObject.opt("CreativeCommonsConfirmed")
+            val creativeCommonsConfirmed = if (creativeCommonsConfirmedElement == null || creativeCommonsConfirmedElement == JSONObject.NULL) "null" else creativeCommonsConfirmedElement.toString()
+            val dateModifiedElement = jsonObject.opt("dateModified")
+            val dateModified = if (dateModifiedElement == null || dateModifiedElement == JSONObject.NULL) "null" else dateModifiedElement.toString()
 
             return MealItem(
                 idMeal,
@@ -94,14 +84,6 @@ class Global {
             )
         }
 
-        /**
-         * This function is used to convert a json string to a meal id (int)
-         */
-        fun convertJsonToMealId(json: String): Int {
-            val gson = Gson()
-            val jsonObject = gson.fromJson(json, JsonObject::class.java)
-            return jsonObject["idMeal"].asInt
-        }
 
         /**
          * This function is used to convert a json string to a MealItem object
@@ -109,8 +91,7 @@ class Global {
          * @param json the json string to be converted
          */
         fun convertJsonToMealFromAPI(json: String): MealItem {
-            val gson = Gson()
-            val jsonObject = gson.fromJson(json, JsonObject::class.java)
+            val jsonObject = JSONObject(json)
 
             val ingredients = ArrayList<String>()
             val measures = ArrayList<String>()
@@ -119,13 +100,10 @@ class Global {
                 val ingredientKey = "strIngredient$i"
                 val measureKey = "strMeasure$i"
 
-                val ingredientElem = jsonObject.get(ingredientKey)
-                var ingredient = if (ingredientElem.isJsonNull || ingredientElem == null) "" else ingredientElem.asString
+                val ingredient = jsonObject.optString(ingredientKey, "")
+                val measure = jsonObject.optString(measureKey, "")
 
-                val measureElem = jsonObject.get(measureKey)
-                val measure = if (measureElem.isJsonNull || measureElem == null) "" else measureElem.asString
-
-                if (ingredient != null && measure != null && ingredient.isNotBlank() && measure.isNotBlank()) {
+                if (ingredient.isNotEmpty() && measure.isNotEmpty()) {
                     // remove commas from ingredients
                     val ingredientNoComma = ingredient.replace(",", "-")
                     ingredients.add(ingredientNoComma)
@@ -133,37 +111,19 @@ class Global {
                 }
             }
 
-            val idMeal = jsonObject["idMeal"].asInt
-            val mealName = jsonObject["strMeal"].asString
-            val drinkAlternateElement = jsonObject.get("strDrinkAlternate")
-            val drinkAlternate =
-                if (drinkAlternateElement.isJsonNull) "" else drinkAlternateElement.asString
-
-            val category = jsonObject["strCategory"].asString
-            val area = jsonObject["strArea"].asString
-            val instructions = jsonObject["strInstructions"].asString
-            val mealThumbElement = jsonObject.get("strMealThumb")
-            val mealThumb =
-                if (mealThumbElement.isJsonNull || mealThumbElement == null) "null" else mealThumbElement.asString
-            val tagsElement = jsonObject.get("strTags")
-            val tags =
-                if (tagsElement.isJsonNull || tagsElement == null) "null" else tagsElement.asString
-            val youtubeElement = jsonObject.get("strYoutube")
-            val youtube =
-                if (youtubeElement.isJsonNull || youtubeElement == null) "null" else youtubeElement.asString
-            val sourceElement = jsonObject.get("strSource")
-            val source =
-                if (sourceElement.isJsonNull || sourceElement == null) "null" else sourceElement.asString
-            val imageSourceElement = jsonObject.get("strImageSource")
-            val imageSource =
-                if (imageSourceElement == null || imageSourceElement.isJsonNull) "null" else imageSourceElement.asString
-            val creativeCommonsConfirmedElement = jsonObject.get("strCreativeCommonsConfirmed")
-            val creativeCommonsConfirmed =
-                if (creativeCommonsConfirmedElement == null || creativeCommonsConfirmedElement.isJsonNull) "null" else creativeCommonsConfirmedElement.asString
-            val dateModifiedElement = jsonObject.get("dateModified")
-            val dateModified =
-                if (dateModifiedElement == null || dateModifiedElement.isJsonNull) "null" else dateModifiedElement.asString
-
+            val idMeal = jsonObject.getInt("idMeal")
+            val mealName = jsonObject.getString("strMeal")
+            val drinkAlternate = jsonObject.optString("strDrinkAlternate", "")
+            val category = jsonObject.getString("strCategory")
+            val area = jsonObject.getString("strArea")
+            val instructions = jsonObject.getString("strInstructions")
+            val mealThumb = jsonObject.optString("strMealThumb", "null")
+            val tags = jsonObject.optString("strTags", "null")
+            val youtube = jsonObject.optString("strYoutube", "null")
+            val source = jsonObject.optString("strSource", "null")
+            val imageSource = jsonObject.optString("strImageSource", "null")
+            val creativeCommonsConfirmed = jsonObject.optString("strCreativeCommonsConfirmed", "null")
+            val dateModified = jsonObject.optString("dateModified", "null")
 
             return MealItem(
                 idMeal,
@@ -183,6 +143,7 @@ class Global {
                 dateModified
             )
         }
+
 
         /**
          * This function perform a button click animation

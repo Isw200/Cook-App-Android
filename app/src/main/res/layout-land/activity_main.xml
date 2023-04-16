@@ -25,7 +25,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editTextTextSearchMain"
+                android:id="@+id/editTextTextSearchByName"
                 android:layout_width="284dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_round2"
@@ -41,7 +41,7 @@
                 android:layout_weight="1" />
 
             <ImageButton
-                android:id="@+id/searchMain"
+                android:id="@+id/searchByNameBtn"
                 android:layout_width="32dp"
                 android:layout_height="44dp"
                 android:layout_weight="1"
