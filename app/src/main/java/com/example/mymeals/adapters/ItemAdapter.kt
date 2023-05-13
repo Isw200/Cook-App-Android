@@ -2,7 +2,9 @@ package com.example.mymeals.adapters
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
 
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +15,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymeals.database.MealItem
 import com.example.mymeals.R
-import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.net.URL
 
 
 class ItemAdapter(private val meals : ArrayList<MealItem>) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
@@ -32,9 +38,27 @@ class ItemAdapter(private val meals : ArrayList<MealItem>) : RecyclerView.Adapte
         val currentItem = meals[position]
 
         //set image
-        Picasso.get()
-            .load(currentItem.MealThumb)
-            .into(holder.mealImage)
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    // Perform network operation in the background thread
+                    val url = URL(currentItem.MealThumb)
+                    val connection = url.openConnection()
+                    connection.doInput = true
+                    connection.connect()
+
+                    val inputStream = connection.getInputStream()
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+
+                    // Set the bitmap on the UI thread
+                    withContext(Dispatchers.Main) {
+                        holder.mealImage.setImageBitmap(bitmap)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
 
         holder.mealName.text = currentItem.Meal
         holder.category.text = "Category: ${currentItem.Category}"

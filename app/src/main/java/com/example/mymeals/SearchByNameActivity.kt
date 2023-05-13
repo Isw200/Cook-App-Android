@@ -3,11 +3,11 @@ package com.example.mymeals
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymeals.adapters.ItemAdapter
-import com.example.mymeals.adapters.MealNameItemAdapter
 import com.example.mymeals.database.MealItem
 import com.example.mymeals.support.SpacingDeco
 import kotlinx.coroutines.Dispatchers
@@ -25,16 +25,40 @@ class SearchByNameActivity : AppCompatActivity() {
     var searchKeyword: String = ""
     var mealsArrayList: ArrayList<MealItem> = ArrayList()
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("searchKeyword", searchKeyword)
+        outState.putParcelableArrayList("mealsArrayList", mealsArrayList)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_by_name)
         supportActionBar?.hide()
+
+        if (savedInstanceState != null) {
+            searchKeyword = savedInstanceState.getString("searchKeyword", "")
+            findViewById<EditText>(R.id.editTextSearchByName).setText(searchKeyword)
+            mealsArrayList = savedInstanceState.getParcelableArrayList<MealItem>("mealsArrayList") as ArrayList<MealItem>
+            showMeals(mealsArrayList)
+        }
 
         // get keyword from intent
         searchKeyword = intent.getStringExtra("keyword")!!
         search(searchKeyword)
 
         findViewById<EditText>(R.id.editTextSearchByName).setText(searchKeyword)
+
+
+        findViewById<ImageButton>(R.id.searchByNameBtn).setOnClickListener {
+            mealsArrayList.clear()
+            searchKeyword = findViewById<EditText>(R.id.editTextSearchByName).text.toString()
+            if (searchKeyword != "") {
+                search(searchKeyword)
+            } else {
+                Toast.makeText(this, "Please enter a keyword", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     /**

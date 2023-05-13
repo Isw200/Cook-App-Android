@@ -9,25 +9,14 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 
 import androidx.room.Room
-import com.example.mymeals.adapters.MealNameItemAdapter
 import com.example.mymeals.Global.Companion.mealDao
 import com.example.mymeals.database.MealDatabase
 import com.example.mymeals.database.MealItem
-import com.example.mymeals.support.SpacingDeco
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.json.JSONArray
-import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
 
 class MainActivity : AppCompatActivity() {
     var mealsArrayList: ArrayList<MealItem> = ArrayList()
