@@ -5,9 +5,12 @@
 
 package com.example.mymeals
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
+import androidx.appcompat.app.AlertDialog
 import com.example.mymeals.database.MealDatabase
 import com.example.mymeals.database.MealItem
 import com.example.mymeals.database.MealItemDao
@@ -183,6 +186,22 @@ class Global {
                     }.start()
                 }
             }.start()
+        }
+
+        fun isNetworkAvailable(context: Context): Boolean {
+            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetworkInfo = connectivityManager.activeNetworkInfo
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected
+        }
+
+        fun showNoInternetDialog(context: Context) {
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("No Internet Connection")
+            builder.setMessage("Please check your internet connection and try again")
+            builder.setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            builder.show()
         }
     }
 }

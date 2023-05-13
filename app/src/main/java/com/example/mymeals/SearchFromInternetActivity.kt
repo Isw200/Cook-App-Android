@@ -108,9 +108,16 @@ class SearchFromInternetActivity : AppCompatActivity() {
      * @param keyWord: String keyword that contains the ingredients
      */
     private fun searchByIng(keyWord: String) {
+        // check is internet connection is available
+        if (!Global.isNetworkAvailable(this)) {
+            Global.showNoInternetDialog(this)
+            return
+        }
+
         // Show loading dialog
         val loadingDialog = LoadingDialog(this)
         loadingDialog.startLoadingDialog()
+
         // Get the result from the API
         try {
             val stb = StringBuilder()
