@@ -5,6 +5,7 @@
 
 package com.example.mymeals
 
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import com.example.mymeals.database.MealDatabase
@@ -37,6 +38,9 @@ class Global {
                 val measure = jsonObject.optString(measureKey, null.toString())
 
                 if (ingredient.isNotBlank() && measure.isNotBlank()) {
+                    if (ingredient.toString() == "null" || measure.toString() == "null") {
+                        break
+                    }
                     val ingredientNoComma = ingredient.replace(",", "-")
                     ingredients.add(ingredientNoComma)
                     measures.add(measure)
@@ -63,7 +67,7 @@ class Global {
             val creativeCommonsConfirmedElement = jsonObject.opt("CreativeCommonsConfirmed")
             val creativeCommonsConfirmed = if (creativeCommonsConfirmedElement == null || creativeCommonsConfirmedElement == JSONObject.NULL) "null" else creativeCommonsConfirmedElement.toString()
             val dateModifiedElement = jsonObject.opt("dateModified")
-            val dateModified = if (dateModifiedElement == null || dateModifiedElement == JSONObject.NULL) "null" else dateModifiedElement.toString()
+            val dateModified = if (dateModifiedElement == null || dateModifiedElement == JSONObject.NULL) "N/A" else dateModifiedElement.toString()
 
             return MealItem(
                 idMeal,
