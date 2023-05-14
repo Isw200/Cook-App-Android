@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymeals.database.MealItem
 import com.example.mymeals.R
@@ -96,10 +98,15 @@ class ItemAdapter(private val meals : ArrayList<MealItem>) : RecyclerView.Adapte
 
         //set links to buttons
         holder.youtubeLink.setOnClickListener {
-            val url = currentItem.Youtube
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(url)
-            holder.itemView.context.startActivity(intent)
+            if (currentItem.Youtube == null || currentItem.Youtube == "") {
+                Toast.makeText(holder.itemView.context, "No Youtube link", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            } else {
+                val url = currentItem.Youtube
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(url)
+                holder.itemView.context.startActivity(intent)
+            }
         }
         holder.sourceLink.setOnClickListener {
             val url = currentItem.Source

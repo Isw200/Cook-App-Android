@@ -136,6 +136,19 @@ class SearchFromInternetActivity : AppCompatActivity() {
                     }
                     bf.close()
                 }
+
+                if (stb.toString().contains("null")) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            this@SearchFromInternetActivity,
+                            "No meals found",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        loadingDialog.dismissDialog()
+                    }
+                    return@launch
+                }
+
                 parseJsonDataMealID(stb)
 
                 // retrieve meals by meal id
