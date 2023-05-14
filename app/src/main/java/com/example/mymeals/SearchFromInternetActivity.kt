@@ -151,7 +151,6 @@ class SearchFromInternetActivity : AppCompatActivity() {
 
         } catch (e: Exception) {
             Toast.makeText(this, "No meals found", Toast.LENGTH_SHORT).show()
-            Log.d("Error_SearchFromInternetActivity", e.toString())
         }
     }
 

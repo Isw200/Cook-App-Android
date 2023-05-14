@@ -188,12 +188,20 @@ class Global {
             }.start()
         }
 
+
+        /**
+         * This function is used to check if the device is connected to the internet
+         */
         fun isNetworkAvailable(context: Context): Boolean {
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetworkInfo = connectivityManager.activeNetworkInfo
             return activeNetworkInfo != null && activeNetworkInfo.isConnected
         }
 
+
+        /**
+         * This function is used to show a dialog when there is no internet connection
+         */
         fun showNoInternetDialog(context: Context) {
             val builder = AlertDialog.Builder(context)
             builder.setTitle("No Internet Connection")
