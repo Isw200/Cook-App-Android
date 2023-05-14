@@ -211,5 +211,18 @@ class Global {
             }
             builder.show()
         }
+
+        /**
+         * This function is used to show a dialog when there is no meal found in given ingredient
+         */
+        fun showNoMealFoundDialog(context: Context) {
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("No Meal Found")
+            builder.setMessage("Please try another ingredient")
+            builder.setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            builder.show()
+        }
     }
 }

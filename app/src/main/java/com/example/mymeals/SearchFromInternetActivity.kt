@@ -138,13 +138,11 @@ class SearchFromInternetActivity : AppCompatActivity() {
                 }
 
                 if (stb.toString().contains("null")) {
+                    loadingDialog.dismissDialog()
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            this@SearchFromInternetActivity,
-                            "No meals found",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        loadingDialog.dismissDialog()
+                        withContext(Dispatchers.Main) {
+                            Global.showNoMealFoundDialog(this@SearchFromInternetActivity)
+                        }
                     }
                     return@launch
                 }
