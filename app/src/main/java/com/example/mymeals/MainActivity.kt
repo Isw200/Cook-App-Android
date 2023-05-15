@@ -1,3 +1,10 @@
+/**
+ * Author: Isuru Ariyarathna
+ * Date: 15-May-2023
+ * UOW ID: w1869302
+ * IIT ID: 20210062
+ */
+
 package com.example.mymeals
 
 import android.content.Intent
